@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busca de CNPJ</title>
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: #fff;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .search-container {
+            position: relative;
+            width: 50%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .search-box {
+            width: 100%;
+            height: 50px;
+            border-radius: 25px;
+            background: #333;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            box-shadow: inset 3px 3px 5px rgba(0, 0, 0, 0.3), inset -3px -3px 5px rgba(255, 255, 255, 0.1);
+        }
+
+        .search-box input {
+            flex: 1;
+            height: 100%;
+            background: transparent;
+            border: none;
+            color: #bbb;
+            font-size: 18px;
+            padding: 0 10px;
+            outline: none;
+        }
+
+        .search-box input::placeholder {
+            color: #666;
+        }
+
+        .search-box button {
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            background: #1db954;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .search-box button:hover {
+            background: #17a34a;
+        }
+
+        .search-box button:active {
+            transform: scale(0.9);
+        }
+
+        .search-box button svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="title" id="animated-title"></div>
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="cnpj-input" placeholder="Digite o CNPJ" maxlength="14">
+            <button onclick="searchCNPJ()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M10 2a8 8 0 105.27 14.22l4.4 4.4a1 1 0 101.41-1.41l-4.4-4.4A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Carregar o arquivo JS -->
+    <script src="/static/js/busca_cnpj.js"></script>
+    <script>
+        // Função para animar o título
+        const animateTitle = (text, elementId, delay = 150) => {
+            const element = document.getElementById(elementId);
+            let index = 0;
+            const interval = setInterval(() => {
+                if (index < text.length) {
+                    element.textContent += text[index];
+                    index++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, delay);
+        };
+
+        // Iniciar animação ao carregar a página
+        document.addEventListener("DOMContentLoaded", () => {
+            animateTitle("Busque o CNPJ", "animated-title");
+        });
+    </script>
+</body>
+</html>
