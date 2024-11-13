@@ -72,7 +72,7 @@ CNPJsearch/
 ├── requirements.txt       # Dependências do projeto
 └── README.md              # Documentação do projeto
 ```
-🖥️ Demonstração
+### 🖥️ Demonstração
 Exemplo de Busca:
 
 
@@ -84,15 +84,15 @@ Atividades principais e secundárias exibidas em tabelas.
 Faça um fork deste repositório.
 Crie uma nova branch:
 bash
-Copiar código
+
 git checkout -b feature/nova-funcionalidade
 Realize suas alterações e faça commit:
 bash
-Copiar código
+
 git commit -m "Adiciona nova funcionalidade"
 Envie para o repositório remoto:
 bash
-Copiar código
+
 git push origin feature/nova-funcionalidade
 Abra um Pull Request explicando suas alterações.
 📄 Licença
