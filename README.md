@@ -59,7 +59,8 @@ Copiar código
 python app.py
 Acesse a aplicação: Abra o navegador e vá para http://127.0.0.1:5000.
 
-📦 Estrutura do Projeto
+### 📦 Estrutura do Projeto
+```bash
 plaintext
 Copiar código
 CNPJsearch/
@@ -71,6 +72,7 @@ CNPJsearch/
 │   └── script.js          # Lógica de busca e exibição de resultados
 ├── requirements.txt       # Dependências do projeto
 └── README.md              # Documentação do projeto
+```
 🖥️ Demonstração
 Exemplo de Busca:
 
