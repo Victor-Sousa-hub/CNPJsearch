@@ -40,24 +40,23 @@
    cd CNPJsearch
 Crie e ative um ambiente virtual:
 
-bash
-Copiar código
+```bash
 python -m venv venv
 source venv/bin/activate  # Linux/MacOS
 venv\Scripts\activate     # Windows
 Instale as dependências:
-
-bash
-Copiar código
+```
+```bash
 pip install -r requirements.txt
 Configure a chave da API no arquivo app.py: Substitua "SUA_CHAVE_DE_API" pela sua chave da API de consulta de CNPJs (exemplo: CNPJ.ws).
-
+```
 Inicie o servidor:
 
-bash
+```bash
 Copiar código
 python app.py
 Acesse a aplicação: Abra o navegador e vá para http://127.0.0.1:5000.
+```
 
 ### 📦 Estrutura do Projeto
 ```bash
