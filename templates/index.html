@@ -59,14 +59,17 @@
             font-weight: bold;
         }
         .enquadramento {
-            color: red;
             font-weight: bold;
+            text-align: center;
+        }
+        .enquadramento.vermelho {
+            color: #f28b82; /* Cor para Licença Ambiental */
         }
         .enquadramento.amarelo {
-            color: #e0a800;
+            color: #fbbc04; /* Cor para Alvará Ambiental */
         }
-        .enquadramento.azul {
-            color: #007bff;
+        .enquadramento.verde {
+            color: #34a853; /* Cor para Inexigibilidade Ambiental */
         }
     </style>
 </head>
@@ -80,6 +83,50 @@
     <div id="resultado"></div>
 
     <script>
+        let jsonData; 
+
+        // Função para carregar o JSON do servidor Flask
+        async function loadJSON() {
+            try {
+                const response = await fetch('/enquadramento');
+                if (!response.ok) throw new Error(`Erro ao carregar o JSON: ${response.status}`);
+                jsonData = await response.json();
+                console.log("JSON carregado com sucesso:", jsonData);
+            } catch (error) {
+                console.error("Erro ao carregar o JSON:", error);
+                throw error;
+            }
+        }
+
+        // Função para buscar o enquadramento com base no Código CNAE
+        const getEnquadramento = (codigo) => {
+            if (!jsonData || !jsonData.Planilha1) {
+                console.error("JSON ainda não carregado ou inválido.");
+                return "N/A";
+            }
+
+            const atividade = jsonData.Planilha1.find(item => item["Código CNAE"] === parseInt(codigo));
+            return atividade ? atividade["Enquadramento da atividade"] : "N/A";
+        };
+
+        // Função para determinar a classe CSS com base no enquadramento
+        const getClassForEnquadramento = (enquadramento) => {
+            switch (enquadramento) {
+                case "Licença Ambiental":
+                    return "vermelho";
+                case "Alvará Ambiental":
+                    return "amarelo";
+                case "Inexigibilidade Ambiental":
+                    return "verde";
+                default:
+                    return "";
+            }
+        };
+        function formatarCNPJ(cnpj) {
+            if (!cnpj || cnpj.length !== 14) return cnpj; // Retorna o original se não tiver 14 dígitos
+            return cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, "$1.$2.$3/$4-$5");
+        }
+
         document.getElementById("consultarBtn").addEventListener("click", async () => {
             const cnpj = document.getElementById("cnpj").value.replace(/\D/g, '');
             const resultadoDiv = document.getElementById("resultado");
@@ -90,6 +137,9 @@
             }
     
             try {
+                // Carrega o JSON do servidor Flask se ainda não estiver carregado
+                if (!jsonData) await loadJSON();
+
                 // Consultando a API
                 const response = await fetch('https://publica.cnpj.ws/cnpj/' + cnpj); // Substitua pela URL real
                 const data = await response.json();
@@ -99,37 +149,39 @@
                     return;
                 }
 
-                // Correção: Valida se a atividade principal existe dentro do estabelecimento
-                const atividadePrincipal = data.estabelecimento?.atividade_principal
-                    ? `
+                // Atividade principal
+                const atividadePrincipalCodigo = data.estabelecimento?.atividade_principal?.id || "N/A";
+                const atividadePrincipalDescricao = data.estabelecimento?.atividade_principal?.descricao || "N/A";
+                const atividadePrincipalEnquadramento = getEnquadramento(atividadePrincipalCodigo);
+                const atividadePrincipalClass = getClassForEnquadramento(atividadePrincipalEnquadramento);
+
+                const atividadePrincipal = `
                     <tr>
-                        <td>${data.estabelecimento.atividade_principal.subclasse || 'N/A'}</td>
-                        <td>${data.estabelecimento.atividade_principal.descricao || 'N/A'}</td>
-                        <td class="enquadramento">Licença Ambiental</td>
-                    </tr>` 
-                    : `
-                    <tr>
-                        <td colspan="3">Atividade principal não disponível</td>
+                        <td>${atividadePrincipalCodigo}</td>
+                        <td>${atividadePrincipalDescricao}</td>
+                        <td class="enquadramento ${atividadePrincipalClass}">${atividadePrincipalEnquadramento}</td>
                     </tr>`;
 
-                // Valida se as atividades secundárias existem
-                const atividadesSecundarias = data.estabelecimento.atividades_secundarias && data.estabelecimento.atividades_secundarias.length > 0
-                    ? data.estabelecimento.atividades_secundarias.map(atividade => `
+                // Atividades secundárias
+                const atividadesSecundarias = data.estabelecimento.atividades_secundarias?.map(atividade => {
+                    const codigo = atividade.id || "N/A";
+                    const descricao = atividade.descricao || "N/A";
+                    const enquadramento = getEnquadramento(codigo);
+                    const enquadramentoClass = getClassForEnquadramento(enquadramento);
+                    return `
                         <tr>
-                            <td>${atividade.subclasse || 'N/A'}</td>
-                            <td>${atividade.descricao || 'N/A'}</td>
-                            <td class="enquadramento ${defineCorEnquadramento()}">Inexigibilidade Ambiental</td>
-                        </tr>`).join('')
-                    : `<tr>
-                        <td colspan="3">Nenhuma atividade secundária disponível</td>
-                    </tr>`;
+                            <td>${codigo}</td>
+                            <td>${descricao}</td>
+                            <td class="enquadramento ${enquadramentoClass}">${enquadramento}</td>
+                        </tr>`;
+                }).join('') || `<tr><td colspan="3">Nenhuma atividade secundária disponível.</td></tr>`;
 
                 // Renderiza os dados
                 resultadoDiv.innerHTML = `
                     <h3>Razão Social: ${data.razao_social || 'Não disponível'}</h3>
                     <p><strong>Situação:</strong> ${data.estabelecimento.situacao_cadastral || 'Não disponível'}</p>
-                    <p><strong>CNPJ:</strong> ${data.estabelecimento.cnpj || 'Não disponível'}</p>
-    
+                    <p><strong>CNPJ:</strong> ${formatarCNPJ(data.estabelecimento.cnpj) || 'Não disponível'}</p>
+
                     <div class="titulo-secao">Atividade Principal:</div>
                     <table>
                         <tr>
@@ -139,7 +191,7 @@
                         </tr>
                         ${atividadePrincipal}
                     </table>
-    
+
                     <div class="titulo-secao">Atividades Secundárias:</div>
                     <table>
                         <tr>
@@ -155,12 +207,6 @@
                 resultadoDiv.innerHTML = `<p>Erro ao buscar os dados: ${error.message}</p>`;
             }
         });
-    
-        function defineCorEnquadramento() {
-            // Retorna uma classe aleatória para estilização do enquadramento
-            const classes = ['amarelo', 'azul', ''];
-            return classes[Math.floor(Math.random() * classes.length)];
-        }
     </script>
 </body>
 </html>

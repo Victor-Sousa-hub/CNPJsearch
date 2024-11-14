@@ -1,0 +1,20 @@
+[
+    {
+        "nome": "Empresa A",
+        "cnpj": "12345678000195",
+        "atividade_principal": "Atividades de televisão aberta",
+        "subclasse": "6021-7/00"
+    },
+    {
+        "nome": "Empresa B",
+        "cnpj": "98765432000199",
+        "atividade_principal": "Produção de filmes para publicidade",
+        "subclasse": "5911-1/02"
+    },
+    {
+        "nome": "Empresa C",
+        "cnpj": "45678923000111",
+        "atividade_principal": "Consultoria em tecnologia da informação",
+        "subclasse": "6204-0/00"
+    }
+]
