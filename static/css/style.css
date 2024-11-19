@@ -85,3 +85,155 @@ body {
     font-size: 0.9rem;
     margin-bottom: 1rem;
 }
+/* Container de registro */
+.register-container {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.register-container p {
+    color: #dcdcdc;
+    font-size: 0.9rem;
+}
+
+.register-container .register-link {
+    color: #4e89f4;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.register-container .register-link:hover {
+    color: #3d73d1;
+}
+
+/* Adicione a mensagem de erro para o registro */
+.error {
+    color: #ff6b6b;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+
+/* Container para o link de resetar senha */
+.reset-container {
+    margin-top: 1rem;
+    text-align: center;/* Estilo geral */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #D8E3C2, #8CD918);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        color: #236441; /* Verde Escuro */
+    }
+    
+    /* Container principal */
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+    
+    /* Card de login */
+    .login-card {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 350px;
+        text-align: center;
+        border: 2px solid #8CD918; /* Verde Claro */
+    }
+    
+    /* Título */
+    .login-card h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: #035AA6; /* Azul */
+    }
+    
+    /* Grupo de input */
+    .input-group {
+        margin-bottom: 1.5rem;
+        text-align: left;
+    }
+    
+    .input-group label {
+        font-size: 0.9rem;
+        margin-bottom: 0.3rem;
+        display: block;
+        color: #236441; /* Verde Escuro */
+    }
+    
+    .input-group input {
+        width: 100%;
+        padding: 0.8rem;
+        margin-top: 0.3rem;
+        border: 1px solid #8CD918; /* Verde Claro */
+        border-radius: 5px;
+        background: #D8E3C2; /* Bege Claro */
+        color: #236441; /* Verde Escuro */
+        font-size: 1rem;
+    }
+    
+    /* Botão de login */
+    .login-button {
+        width: 100%;
+        padding: 0.8rem;
+        background: #F27405; /* Laranja */
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        font-weight: bold;
+        color: #fff;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    
+    .login-button:hover {
+        background: #D86002; /* Laranja escuro */
+    }
+    
+    /* Mensagem de erro */
+    .error {
+        color: #F27405; /* Laranja */
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+    
+    /* Link de voltar para login */
+    .register-container p {
+        margin-top: 1.5rem;
+        font-size: 0.9rem;
+        color: #236441; /* Verde Escuro */
+    }
+    
+    .register-container a {
+        color: #035AA6; /* Azul */
+        font-weight: bold;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+    
+    .register-container a:hover {
+        color: #023E73; /* Azul mais escuro */
+    }
+    
+}
+
+.reset-link {
+    color: #4e89f4;
+    font-size: 0.9rem;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.reset-link:hover {
+    color: #3d73d1;
+}
