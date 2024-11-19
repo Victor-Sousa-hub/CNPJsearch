@@ -1,14 +1,48 @@
-from flask import Flask, render_template, jsonify, send_from_directory
+from flask import Flask, render_template, jsonify, send_from_directory,request, jsonify, redirect, url_for, session
 from flask_cors import CORS
+from flask_bcrypt import Bcrypt
 import os
+from functools import wraps
 
 app = Flask(__name__)
 CORS(app)
 
+app.secret_key = os.urandom(24)
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
 # Rota principal para exibir o formulário de busca
 @app.route("/")
+@login_required
 def index():
     return render_template("index.html")
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        # Credenciais de exemplo
+        if username == "admin" and password == "senha123":
+            session['user_id'] = username
+            return redirect(url_for('index'))
+        
+        return render_template("login.html", error="Credenciais inválidas!")
+    
+    return render_template("login.html")
+
+# Logout
+@app.route('/logout', methods=['POST'])
+def logout():
+    session.pop('user_id', None)
+    return jsonify({"message": "Logout realizado com sucesso!"}), 200
 
 # Rota para busca de CNPJ
 @app.route("/api/busca_cnpj/<cnpj>/")
